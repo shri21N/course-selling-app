@@ -14,19 +14,19 @@ adminRouter.post("/signup",(req,res)=>{
     })
 })
 
-adminRouter.post("/",(req,res)=>{
+adminRouter.post("/course",(req,res)=>{
     res.json({
         message:"create course endpoint"
     })
 })
 
-adminRouter.put("/",(req,res)=>{
+adminRouter.put("/course",(req,res)=>{
     res.json({
         message:"create course endpoint"
     })
 })
 
-adminRouter.get("/bulk",(req,res)=>{
+adminRouter.get("/course/bulk",(req,res)=>{
     res.json({
         message:"create course endpoint"
     })
