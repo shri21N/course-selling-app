@@ -4,6 +4,7 @@ const { adminModel } = require("../db");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const { JWT_ADMIN_PASSWORD } = require("../config");
+const { verifyToken } = require("../middleware/admin");
 const adminRouter = Router();
 
 adminRouter.post("/signup", async (req, res) => {
@@ -60,19 +61,19 @@ adminRouter.post("/login", async (req, res) => {
 })
 
 
-adminRouter.post("/course", (req, res) => {
+adminRouter.post("/course", verifyToken(JWT_ADMIN_PASSWORD), (req, res) => {
     res.json({
         message: "create course endpoint"
     })
 })
 
-adminRouter.put("/course", (req, res) => {
+adminRouter.put("/course", verifyToken(JWT_ADMIN_PASSWORD), (req, res) => {
     res.json({
         message: "create course endpoint"
     })
 })
 
-adminRouter.get("/course/bulk", (req, res) => {
+adminRouter.get("/course/bulk", verifyToken(JWT_ADMIN_PASSWORD), (req, res) => {
     res.json({
         message: "create course endpoint"
     })
