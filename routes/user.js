@@ -35,11 +35,16 @@ userRouter.post('/signup', async (req, res) => {
 
 userRouter.post('/login', async function (req, res) {
     const { email, password } = req.body;
-
-    const user = await userModel.findOne({
-        email: email,
-        // password: password
-    });
+    let user;
+    try {
+        user = await userModel.findOne({
+            email: email,
+            // password: password
+        });
+    } catch (e) {
+        console.log(e);
+        res.json({ error: "error in connection" })
+    }
 
     const match = await bcrypt.compare(password, user.password);
 
