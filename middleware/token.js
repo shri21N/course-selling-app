@@ -8,7 +8,7 @@ function verifyToken(key) {
         const decoded = jwt.verify(token, key);
 
         if (decoded) {
-            req.userId = decoded.userId;
+            req.id = decoded.id;
             next();
         } else {
             res.status(403).json({

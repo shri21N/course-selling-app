@@ -2,9 +2,9 @@ const { Router } = require("express");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
-const { userModel } = require("../db");
+const { userModel, purchaseModel, courseModel } = require("../db");
 const { JWT_USER_PASSWORD } = require("../config");
-const { userMiddleware, verifyToken } = require("../middleware/token");
+const { verifyToken } = require("../middleware/token");
 
 const userRouter = Router();
 
@@ -62,10 +62,28 @@ userRouter.post('/login', async function (req, res) {
     }
 })
 
-userRouter.get('/purchases', verifyToken(JWT_USER_PASSWORD), function (req, res) {
-    res.json({
-        message: "purchases endpoint"
-    })
+userRouter.get('/purchases', verifyToken(JWT_USER_PASSWORD), async function (req, res) {
+    const userId = req.id;
+    let courses;
+    let data;
+    try {
+        courses = await purchaseModel.find({
+            userId
+        })
+        data = await courseModel.find({
+            _id: { $in: courses.map(x => x.courseId) }
+        })
+        res.json({
+            courses,
+            data
+        })
+    } catch (e) {
+        console.log(e);
+        res.json({
+            message: "unable to conect db"
+        })
+    }
+
 })
 
 module.exports = {
